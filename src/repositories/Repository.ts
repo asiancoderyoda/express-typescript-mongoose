@@ -1,5 +1,5 @@
 import { injectable, unmanaged } from 'inversify';
-import * as mongoose from "mongoose";
+import * as mongoose from 'mongoose';
 import 'reflect-metadata';
 import { IRepository } from '../interfaces';
 
@@ -7,27 +7,30 @@ import { IRepository } from '../interfaces';
 export abstract class Repository<T extends mongoose.Document> implements IRepository<T> {
     private _model: mongoose.Model<mongoose.Document>;
 
-    constructor( @unmanaged() model: mongoose.Model<any, {}, {}, {}>) {
+    constructor(@unmanaged() model: mongoose.Model<any, {}, {}, {}>) {
         this._model = model;
     }
 
     create(item: any, callback?: (error: any, result: T) => void): Promise<T> {
         let self = this;
         let p = new Promise<T>((resolve, reject) => {
-            self._model.create(item).then(res => {
-                if (callback) {
-                    callback(null, <T>res);
-                } else {
-                    resolve(<T>res);
-                }
-            }).catch(err => {
-                if (callback) {
-                    callback(err, <T>{});
-                }
-                if (err) {
-                    reject(err);
-                }
-            })
+            self._model
+                .create(item)
+                .then((res) => {
+                    if (callback) {
+                        callback(null, <T>res);
+                    } else {
+                        resolve(<T>res);
+                    }
+                })
+                .catch((err) => {
+                    if (callback) {
+                        callback(err, <T>{});
+                    }
+                    if (err) {
+                        reject(err);
+                    }
+                });
         });
 
         return p;
@@ -42,8 +45,7 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
                 }
                 if (err) {
                     reject(err);
-                }
-                else {
+                } else {
                     resolve(<T[]>res);
                 }
             });
@@ -61,8 +63,7 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
                 }
                 if (err) {
                     reject(err);
-                }
-                else {
+                } else {
                     resolve(<T>res);
                 }
             });
@@ -80,8 +81,7 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
                 }
                 if (err) {
                     reject(err);
-                }
-                else {
+                } else {
                     resolve(<T>res);
                 }
             });
@@ -103,8 +103,7 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
                 }
                 if (err) {
                     reject(err);
-                }
-                else {
+                } else {
                     resolve(<T[]>res);
                 }
             });
@@ -119,8 +118,7 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
             self._model.count(cond, (err, count) => {
                 if (err) {
                     reject(err);
-                }
-                else {
+                } else {
                     resolve(count);
                 }
             });
@@ -138,8 +136,7 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
 
                 if (err) {
                     reject(err);
-                }
-                else {
+                } else {
                     resolve(<T>result);
                 }
             });
@@ -152,13 +149,12 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
         let self = this;
         let p = new Promise<T>((resolve, reject) => {
             let options = {
-                upsert: true
+                upsert: true,
             };
             self._model.findOneAndUpdate(cond, item, options, (err, result) => {
                 if (err) {
                     reject(err);
-                }
-                else {
+                } else {
                     resolve(<T>result);
                 }
             });
@@ -171,14 +167,13 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
         let self = this;
         let p = new Promise<T>((resolve, reject) => {
             let options = {
-                'new': true
+                new: true,
             };
             self._model.findByIdAndUpdate(_id, { $push: item }, options, (err, result) => {
                 console.log(item);
                 if (err) {
                     reject(err);
-                }
-                else {
+                } else {
                     resolve(<T>result);
                 }
             });
@@ -196,8 +191,7 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
                 }
                 if (err) {
                     reject(err);
-                }
-                else {
+                } else {
                     resolve(true);
                 }
             });
@@ -215,8 +209,7 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
                 }
                 if (err) {
                     reject(err);
-                }
-                else {
+                } else {
                     resolve(true);
                 }
             });
@@ -228,5 +221,4 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     toObjectId(_id: string) {
         return mongoose.Types.ObjectId.createFromHexString(_id);
     }
-
 }

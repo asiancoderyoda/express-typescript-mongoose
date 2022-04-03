@@ -1,12 +1,12 @@
-import mongoose, {Connection} from 'mongoose';
+import mongoose, { Connection } from 'mongoose';
 import * as dotenv from 'dotenv';
 
 class Config {
     static mongooseInstance: any;
     static mongooseConnection: Connection;
     private static envConfig: Record<string, string | undefined>;
-    private static readonly thisConfig = dotenv.config()
-   
+    private static readonly thisConfig = dotenv.config();
+
     constructor() {
         Config.connect();
     }
@@ -21,20 +21,21 @@ class Config {
             return this.mongooseInstance;
         }
 
-        const uri = 'mongodb://' + this.get('MONGO_HOST') + '/' + this.get('MONGO_DATABASE')
+        const uri = 'mongodb://' + this.get('MONGO_HOST') + '/' + this.get('MONGO_DATABASE');
         const mongoConfig = this.getMongoConfig();
 
         this.mongooseConnection = mongoose.connection;
-        this.mongooseConnection.once('open', () => {
-            console.log('MongoDB database connection established successfully');
-            console.log('Connected to: ' + uri);
-        })
-        .on('error', (error: any) => {
-            return Config.connect();
-        });
-        
-        this.mongooseInstance = mongoose.connect(uri, {...mongoConfig});
-        this.mongooseInstance = global.Promise
+        this.mongooseConnection
+            .once('open', () => {
+                console.log('MongoDB database connection established successfully');
+                console.log('Connected to: ' + uri);
+            })
+            .on('error', (error: any) => {
+                return Config.connect();
+            });
+
+        this.mongooseInstance = mongoose.connect(uri, { ...mongoConfig });
+        this.mongooseInstance = global.Promise;
         return this.mongooseInstance;
     }
 
@@ -57,7 +58,7 @@ class Config {
             useUnifiedTopology: true,
             keepAlive: true,
             socketTimeoutMS: 360000,
-            connectTimeoutMS : 360000,
+            connectTimeoutMS: 360000,
         };
     }
 }

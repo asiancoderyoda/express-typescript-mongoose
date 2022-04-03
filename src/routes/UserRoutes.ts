@@ -1,13 +1,11 @@
-import * as express from 'express';
+import { Express, Request, Response, NextFunction } from 'express';
 import { Container } from 'inversify';
+import { UserController } from '../controllers';
 
 export class UserRoutes {
-    public static configureRoutes(app: express.Express, container: Container): void {
+    public static configureRoutes(app: Express, container: Container): void {
+        const userController = container.get(UserController);
 
-        app.route('/').get((req: express.Request, res: express.Response, next: express.NextFunction) => {
-            res.status(200).send({
-                message: 'GET request successfulll!!!!'
-            })
-        })
+        app.route('/').get((req: Request, res: Response, next: NextFunction) => userController.login(req, res, next));
     }
 }
