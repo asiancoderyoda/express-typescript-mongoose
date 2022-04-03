@@ -1,14 +1,14 @@
 import { injectable, unmanaged } from 'inversify';
-import mongoose = require("mongoose");
+import * as mongoose from "mongoose";
 import 'reflect-metadata';
-import { IRepository } from 'src/interfaces';
+import { IRepository } from '../interfaces';
 
 @injectable()
 export abstract class Repository<T extends mongoose.Document> implements IRepository<T> {
     private _model: mongoose.Model<mongoose.Document>;
 
-    constructor( @unmanaged() schemaModel: mongoose.Model<mongoose.Document>) {
-        this._model = schemaModel;
+    constructor( @unmanaged() model: mongoose.Model<any, {}, {}, {}>) {
+        this._model = model;
     }
 
     create(item: any, callback?: (error: any, result: T) => void): Promise<T> {
@@ -52,10 +52,10 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
         return p;
     }
 
-    findById(id: string, callback?: (error: any, result: T) => void): Promise<T> {
+    findById(_id: string, callback?: (error: any, result: T) => void): Promise<T> {
         let self = this;
         let p = new Promise<T>((resolve, reject) => {
-            self._model.findById(id, (err: any, res: any) => {
+            self._model.findById(_id, (err: any, res: any) => {
                 if (callback) {
                     callback(err, <T>res);
                 }

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from "inversify";
-import { IOCTYPES } from 'src/ioc';
-import { IUserService } from 'src/interfaces';
+import { IOCTYPES } from '../ioc';
+import { IUserService } from '../interfaces';
 
 @injectable()
 export class UserController {

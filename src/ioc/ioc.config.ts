@@ -4,23 +4,23 @@ import { IOCTYPES } from './ioc-types.enum';
 //  CONTROLLER IMPORTS
 import {
     UserController,
-} from 'src/controllers';
+} from '../controllers';
 
 //  REPOSITORY IMPORTS
 import {
     UserRepository,
-} from 'src/repositories';
+} from '../repositories';
 import {
     IUserRepository,
-} from 'src/interfaces';
+} from '../interfaces';
 
 //  SERVICE IMPORTS
 import {
     UserService,
-} from 'src/services';
+} from '../services';
 import {
     IUserService,
-} from 'src/interfaces';
+} from '../interfaces';
 
 export module IOC {
     export const container = new Container()

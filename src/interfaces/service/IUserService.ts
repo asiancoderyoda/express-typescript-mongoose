@@ -1,4 +1,4 @@
-import { IUser } from "src/db/interfaces/IUser";
+import { IUser } from "../../db/interfaces/IUser";
 
 export interface IUserService {
     login(): Promise<IUser>;

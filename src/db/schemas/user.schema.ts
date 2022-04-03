@@ -55,15 +55,11 @@ class UserSchema {
             // discriminatorKey: '_type',
         });
 
-        // schema.virtual('fullName').get(function () {
-        //     return this.firstName + ' ' + this.lastName;
-        // })
-        
         return schema;
     }
 
     
 
 }
-var schema = mongooseConnection.model<IUser>('User', UserSchema.schema);
-export = schema;
+var userSchema = mongooseConnection.model<IUser>('User', UserSchema.schema);
+export {userSchema};

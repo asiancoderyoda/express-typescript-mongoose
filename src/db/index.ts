@@ -2,4 +2,4 @@
 export { IUser } from './interfaces/IUser';
 
 // concrete schemas
-export {schema as UserSchema} from './schemas/user.schema';
+export {userSchema as UserSchema} from './schemas/user.schema';

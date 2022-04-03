@@ -1,6 +1,6 @@
-import { Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 
-export interface IUser extends Document {
+export interface IUser extends mongoose.Document {
     firstName: string;
     lastName: string;
     userName: string;

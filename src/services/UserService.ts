@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
-import { IUser } from "src/db/interfaces/IUser";
-import { IUserRepository, IUserService } from "src/interfaces";
-import { IOCTYPES } from "src/ioc";
+import { IUser } from "../db/interfaces/IUser";
+import { IUserRepository, IUserService } from "../interfaces";
+import { IOCTYPES } from "../ioc";
 
 @injectable()
 export class UserService implements IUserService {
