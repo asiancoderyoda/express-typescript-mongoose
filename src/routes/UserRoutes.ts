@@ -6,6 +6,7 @@ export class UserRoutes {
     public static configureRoutes(app: Express, container: Container): void {
         const userController = container.get(UserController);
 
-        app.route('/').get((req: Request, res: Response, next: NextFunction) => userController.login(req, res, next));
+        app.route('/auth').get((req: Request, res: Response, next: NextFunction) => userController.login(req, res, next))
+        // .post((req: Request, res: Response, next: NextFunction) => userController.register(req, res, next));  
     }
 }
