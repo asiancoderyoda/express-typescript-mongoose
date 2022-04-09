@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { IUser } from '../db/interfaces/IUser';
+// import { IUser } from '../db/interfaces/IUser';
 import { IUserRepository, IUserService } from '../interfaces';
 import { IOCTYPES } from '../ioc';
 
@@ -7,10 +7,10 @@ import { IOCTYPES } from '../ioc';
 export class UserService implements IUserService {
     constructor(@inject(IOCTYPES.USER_REPOSITORY) private _userRepository: IUserRepository) {}
 
-    public async login(): Promise<IUser> {
+    public async login(): Promise<string> {
         try {
-            const user = await this._userRepository.findOne({ email: 'avigyanbhaktacontai@gmail.com' }, { password: 0 }, { lean: true });
-            return user;
+            const user = await this._userRepository.findOne({ email: 'avigyanbhaktacontai@gmail.com' }, { password: 0 }, {});
+            return user.fullName;
         } catch (err) {
             throw new Error(err);
         }

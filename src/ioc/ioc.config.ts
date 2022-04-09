@@ -12,7 +12,12 @@ import { IUserRepository } from '../interfaces';
 import { UserService } from '../services';
 import { IUserService } from '../interfaces';
 
-export module IOC {
+// UTILS IMPORTS
+import { LoggerUtils } from '../utils';
+import { ResponseUtils } from '../utils';
+
+export namespace IOC {
+    // Same as export module IOC {}
     export const container = new Container();
 
     export function configureContainer(): Container {
@@ -24,6 +29,10 @@ export module IOC {
 
         // SERVICES
         container.bind<IUserService>(IOCTYPES.USER_SERVICE).to(UserService);
+
+        // UTILS
+        container.bind<LoggerUtils>(IOCTYPES.LOGGER_UTILS).to(LoggerUtils);
+        container.bind<ResponseUtils>(IOCTYPES.RESPONSE_UTILS).to(ResponseUtils);
 
         return container;
     }

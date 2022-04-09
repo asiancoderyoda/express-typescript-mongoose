@@ -2,11 +2,11 @@ import { Schema } from 'mongoose';
 import { IUser } from '..';
 import Config = require('../config');
 
-var mongooseConnection = Config.mongooseConnection;
+const mongooseConnection = Config.mongooseConnection;
 
 class UserSchema {
     static get schema() {
-        var schema = new Schema(
+        const schema = new Schema(
             {
                 firstName: {
                     type: String,
@@ -59,8 +59,13 @@ class UserSchema {
             },
         );
 
+        schema.virtual('fullName').get(function () {
+            // @ts-ignore
+            return `${this.firstName} ${this.lastName}`;
+        });
+
         return schema;
     }
 }
-var userSchema = mongooseConnection.model<IUser>('User', UserSchema.schema);
+const userSchema = mongooseConnection.model<IUser>('User', UserSchema.schema);
 export { userSchema };
