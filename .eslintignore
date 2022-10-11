@@ -1,8 +1,13 @@
-{
-  "printWidth": 80,
-  "semi": true,
-  "singleQuote": true,
-  "tabWidth": 2,
-  "trailingComma": "es5",
-  "endOfLine": "lf"
-}
+/build/**
+/coverage/**
+/docs/**
+/jsdoc/**
+/templates/**
+/tests/bench/**
+/tests/fixtures/**
+/tests/performance/**
+/tmp/**
+/tools/internal-rules/node_modules/**
+test.js
+/dist/**
+!.eslintrc.js

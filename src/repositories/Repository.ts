@@ -7,14 +7,13 @@ import { IRepository } from '../interfaces';
 export abstract class Repository<T extends mongoose.Document> implements IRepository<T> {
     private _model: mongoose.Model<mongoose.Document>;
 
-    constructor(@unmanaged() model: mongoose.Model<any, {}, {}, {}>) {
+    constructor(@unmanaged() model: mongoose.Model<any, Record<string, unknown>, Record<string, unknown>, Record<string, unknown>>) {
         this._model = model;
     }
 
     create(item: any, callback?: (error: any, result: T) => void): Promise<T> {
-        let self = this;
-        let p = new Promise<T>((resolve, reject) => {
-            self._model
+        const p = new Promise<T>((resolve, reject) => {
+            this._model
                 .create(item)
                 .then((res) => {
                     if (callback) {
@@ -37,9 +36,8 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     }
 
     retrieve(callback: (error: any, result: T[]) => void): Promise<T[]> {
-        let self = this;
-        let p = new Promise<T[]>((resolve, reject) => {
-            self._model.find({}, (err, res) => {
+        const p = new Promise<T[]>((resolve, reject) => {
+            this._model.find({}, (err, res) => {
                 if (callback) {
                     callback(err, <T[]>res);
                 }
@@ -55,9 +53,8 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     }
 
     findById(_id: string, callback?: (error: any, result: T) => void): Promise<T> {
-        let self = this;
-        let p = new Promise<T>((resolve, reject) => {
-            self._model.findById(_id, (err: any, res: any) => {
+        const p = new Promise<T>((resolve, reject) => {
+            this._model.findById(_id, (err: any, res: any) => {
                 if (callback) {
                     callback(err, <T>res);
                 }
@@ -73,9 +70,8 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     }
 
     findOne(cond: any, fields: any, options: any, callback?: (err: any, res: T) => void): Promise<T> {
-        let self = this;
-        let p = new Promise<T>((resolve, reject) => {
-            self._model.findOne(cond, fields, options).exec((err, res) => {
+        const p = new Promise<T>((resolve, reject) => {
+            this._model.findOne(cond, fields, options).exec((err, res) => {
                 if (callback) {
                     callback(err, <T>res);
                 }
@@ -91,7 +87,7 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     }
 
     find(cond: any, fields: any, options: any, sortOptions?: any, callback?: (err: any, res: T[]) => void): Promise<T[]> {
-        let p = new Promise<T[]>((resolve, reject) => {
+        const p = new Promise<T[]>((resolve, reject) => {
             let query = this._model.find(cond, fields, options);
             if (sortOptions) {
                 query = query.sort(sortOptions);
@@ -113,9 +109,8 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     }
 
     count(cond?: any): Promise<number> {
-        let self = this;
-        let p = new Promise<number>((resolve, reject) => {
-            self._model.count(cond, (err, count) => {
+        const p = new Promise<number>((resolve, reject) => {
+            this._model.count(cond, (err, count) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -128,7 +123,7 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     }
 
     save(item: T, callback?: (error: any, result: T) => void): Promise<T> {
-        let p = new Promise<T>((resolve, reject) => {
+        const p = new Promise<T>((resolve, reject) => {
             item.save((err, result) => {
                 if (callback) {
                     callback(err, <T>result);
@@ -146,12 +141,11 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     }
 
     upsert(cond: any, item: any, callback?: (error: any, result: T) => void): Promise<T> {
-        let self = this;
-        let p = new Promise<T>((resolve, reject) => {
-            let options = {
+        const p = new Promise<T>((resolve, reject) => {
+            const options = {
                 upsert: true,
             };
-            self._model.findOneAndUpdate(cond, item, options, (err, result) => {
+            this._model.findOneAndUpdate(cond, item, options, (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -164,12 +158,11 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     }
 
     findByIdAndPush(_id: string, item: any, callback?: (error: any, result: T) => void): Promise<T> {
-        let self = this;
-        let p = new Promise<T>((resolve, reject) => {
-            let options = {
+        const p = new Promise<T>((resolve, reject) => {
+            const options = {
                 new: true,
             };
-            self._model.findByIdAndUpdate(_id, { $push: item }, options, (err, result) => {
+            this._model.findByIdAndUpdate(_id, { $push: item }, options, (err, result) => {
                 console.log(item);
                 if (err) {
                     reject(err);
@@ -183,9 +176,8 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     }
 
     delete(_id: string, callback?: (error: any) => void): Promise<boolean> {
-        let self = this;
-        let p = new Promise<boolean>((resolve, reject) => {
-            self._model.remove({ _id: this.toObjectId(_id) }, (err) => {
+        const p = new Promise<boolean>((resolve, reject) => {
+            this._model.remove({ _id: this.toObjectId(_id) }, (err) => {
                 if (callback) {
                     callback(err);
                 }
@@ -201,9 +193,8 @@ export abstract class Repository<T extends mongoose.Document> implements IReposi
     }
 
     deleteAll(callback?: (error: any) => void): Promise<boolean> {
-        let self = this;
-        let p = new Promise<boolean>((resolve, reject) => {
-            self._model.remove({}, (err) => {
+        const p = new Promise<boolean>((resolve, reject) => {
+            this._model.remove({}, (err) => {
                 if (callback) {
                     callback(err);
                 }
